@@ -1,20 +1,31 @@
 var gulp = require('gulp');
+var ts = require('gulp-typescript');
+var tsconfig = require('./tsconfig.json');
+var npm = require('npm');
+
+console.log(npm);
 
 var paths = {
 	bin: 'bin/**/*',
-	scripts: '**/*.js'
+	typescript: 'src/**/*.ts',
+	javascript: '**/*.js'
 }
 
-gulp.task('bump', function() {
-	console.log('Just pretend I\'m bumping the version number');
+gulp.task('compile', function() {
+	return gulp
+		.src(paths.typescript)
+		.pipe(ts(tsconfig.compilerOptions))
+		.pipe(gulp.dest('.'));
 });
 
 gulp.task('pack', function() {
-	console.log('Just pretend I\'m packing the NPMs');
+	console.log('Packing');
 });
 
-gulp.task('default', ['watch', 'bump', 'pack']);
-gulp.task('watch', function() {
-	gulp.watch(paths.bin);
-	gulp.watch(paths.scripts);	
+gulp.task('watch', ['default'], function() {
+	gulp.watch(paths.bin, ['pack']);
+	gulp.watch(paths.javascript, ['pack']);
+	gulp.watch(paths.typescript, ['compile']);	
 });
+
+gulp.task('default', ['compile', 'pack']);

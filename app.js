@@ -1,5 +1,7 @@
-var alphabet = 'abcdefghijklmnopqrstuvwxyz';
-var selectionIndex = Math.round(Math.random() * alphabet.length);
-var selected = alphabet[selectionIndex];
-console.log(selected);
-
+function generate() {
+    var alphabet = 'abcdefghijklmnopqrstuvwxyz';
+    var selectionIndex = Math.round(Math.random() * alphabet.length);
+    var selected = alphabet[selectionIndex];
+    console.log(selected);
+}
+exports.generate = generate;
