@@ -10,6 +10,15 @@
     "type": "git",
     "url": "https://github.com/mitchdenny/namerer/"
   },
+  "bin": {
+    "namerer": "./bin/namerer"
+  },
   "author": "Mitch Denny <mitch@mitchdenny.com> (http://mitchdenny.com/)",
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "dependencies": {
+    "commander": "^2.9.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0"
+  }
 }
