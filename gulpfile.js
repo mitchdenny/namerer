@@ -28,15 +28,16 @@ function updatePackage(version) {
 	fs.writeFileSync('package.json', updatedContents);
 }
 
-function exportVariableToBuildServer(version) {
-	console.log('##vso[task.setvariable variable=Build.SemVer;]%s', version);
+function appendVersionToBuildNumber(version) {
+	var buildNumber = process.env.BUILD_BUILDNUMBER + '_' + version;
+	console.log('##vso[build.buildbuildnumber]%s', buildNumber);
 }
 
 gulp.task('stamp', function (callback) {
 	exec('git describe --abbrev=0', function (err, stdout, stderr) {
 		var version = stdout.toString().split('\n')[0];
 		updatePackage(version);
-		exportVariableToBuildServer(version);
+		appendVersionToBuildNumber(version);
 		callback(err);
 	});
 });
