@@ -30,7 +30,7 @@ function updatePackage(version) {
 
 function appendVersionToBuildNumber(version) {
 	var buildNumber = process.env.BUILD_BUILDNUMBER + '_' + version;
-	console.log('##vso[build.buildbuildnumber]%s', buildNumber);
+	console.log('##vso[build.updatebuildnumber]%s', buildNumber);
 }
 
 gulp.task('stamp', function (callback) {
