@@ -1,12 +1,15 @@
 #!/usr/bin/env node
-var namerer = require('./app.js');
+var namerer = require('../app.js');
 var program = require('commander');
 
 program
-	.version('0.1.0')
+	.version(namerer.getVersion())
 	.command('generate [template]')
-	.action(function(template) {
-		namerer.generate();
+	.option('-a, --alphabet [alphabet]', 'Selection of letters to generate from.')
+	.option('-n, --numbers [numbers]', 'Seletion of numbers to generate from.')
+	.option('-c, --count [count]', 'Number of names to generate.')
+	.action(function(template, options) {
+		namerer.generate(template, options.alphabet, options.numbers, options.count);
 	});
 	
 program.parse(process.argv);
