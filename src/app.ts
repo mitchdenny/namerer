@@ -2,7 +2,7 @@
 import * as fs from 'fs';
 
 export function getVersion() {
-	let content = fs.readFileSync('package.json', 'utf8');
+	let content = fs.readFileSync(__dirname + '/package.json', 'utf8');
 	let pkg = JSON.parse(content);
 	return pkg.version;
 }

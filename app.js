@@ -1,7 +1,7 @@
 /// <reference path="../typings/node/node.d.ts" />
 var fs = require('fs');
 function getVersion() {
-    var content = fs.readFileSync('package.json', 'utf8');
+    var content = fs.readFileSync(__dirname + '/package.json', 'utf8');
     var pkg = JSON.parse(content);
     return pkg.version;
 }

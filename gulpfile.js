@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+var fs = require('fs');
 var ts = require('gulp-typescript');
 var tsconfig = require('./tsconfig.json');
 var exec = require('child_process').exec;
@@ -17,6 +18,19 @@ gulp.task('compile', function() {
 		.pipe(gulp.dest('.'));
 });
 
+gulp.task('stamp', function(callback) {
+	exec('git describe --abbrev=0', function(err, stdout, stderr) {
+		var originalContents = fs.readFileSync('package.json', 'utf8');
+		var pkg = JSON.parse(originalContents);
+
+		pkg.version = stdout.toString().split('\n')[0];
+
+		var updatedContents = JSON.stringify(pkg, null, '\t');
+		fs.writeFileSync('package.json', updatedContents);
+		callback(err);
+	});
+});
+
 gulp.task('pack', function(callback) {
 	exec('npm pack', function(err, stdout, stderr) {
 		console.log(stdout);
@@ -32,4 +46,4 @@ gulp.task('watch', ['default'], function() {
 	gulp.watch(paths.typescript, ['compile']);	
 });
 
-gulp.task('default', ['compile', 'pack']);
+gulp.task('default', ['stamp', 'compile', 'pack']);
