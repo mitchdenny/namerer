@@ -36,6 +36,7 @@ function appendVersionToBuildNumber(version) {
 gulp.task('stamp', function (callback) {
 	exec('git describe --abbrev=0', function (err, stdout, stderr) {
 		var version = stdout.toString().split('\n')[0];
+		console.log('git detected version was: %s', version);
 		updatePackage(version);
 		appendVersionToBuildNumber(version);
 		callback(err);
