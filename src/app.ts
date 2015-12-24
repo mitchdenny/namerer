@@ -1,5 +1,8 @@
 /// <reference path="../typings/node/node.d.ts" />
+/// <reference path="../typings/underscore/underscore.d.ts" />
 import * as fs from 'fs';
+import underscore = require('underscore');
+var request = require('sync-request');
 
 export function getVersion() {
 	let content = fs.readFileSync(__dirname + '/package.json', 'utf8');
@@ -7,51 +10,82 @@ export function getVersion() {
 	return pkg.version;
 }
 
-function selectRandom<T>(possibilities: T[]): T {
-	let randomIndex = Math.floor(Math.random() * possibilities.length);
-	let selection = possibilities[randomIndex];
-	return selection;
-}
-
-function appendLetter(input: string, alphabet: string): string {
-	let character = selectRandom(alphabet.split(''));	
-	let output = input + character;
-	return output;
-}
-
-function appendActual(input: string, actual: string): string {
-	let output = input + actual;
-	return output;
-}
-
-function appendNumber(input: string, numbers: string): string {
-	let number = selectRandom(numbers.split(''));	
-	let output = input + number;
-	return output;
-}
-
-function generateName(template: string, alphabet: string, numbers: string): string {
-	let generators: ((() => string) | string)[] = [];
-	
-	let output: string = '';
-	
-	for(let templateIndex = 0; templateIndex < template.length; templateIndex++) {
-		let templateCharacter = template[templateIndex];
-
-		switch (templateCharacter) {
-			case '?':
-				output = appendLetter(output, alphabet);
-				break;
-			case '#':
-				output = appendNumber(output, numbers);
-				break;
-			default:
-				output = appendActual(output, templateCharacter);
-				break;
-		}
+class GeneratorContext {
+	constructor(template: string, alphabet: string[], numbers: string[]) {
+		this.template = template;
+		this.alphabet = alphabet;
+		this.numbers = numbers;
 	}
 	
+	public template: string;
+
+	private alphabet: string[];
+	private numbers: string[];
+	
+	private selectRandom<T>(possibilities: T[]): T {
+		let randomIndex = Math.floor(Math.random() * possibilities.length);
+		let selection = possibilities[randomIndex];
+		return selection;
+	}
+	
+	public synonym(word: string): string {
+		let url = `http://words.bighugelabs.com/api/2/845ce6475dd073474a31f951868035d7/${word}/json`;
+		let response = request('get', url);
+		let lookup = JSON.parse(response.getBody());
+		
+		let mergedSynonyms: string[] = [];
+
+		if (lookup.verb) {
+			let verbSynonyms: string[] = lookup.verb.syn.filter((value: string) => value.indexOf(' ') == -1);
+			mergedSynonyms = mergedSynonyms.concat(verbSynonyms);
+		}
+
+		if (lookup.noun) {
+			let nounSynonyms: string[] = lookup.noun.syn.filter((value: string) => value.indexOf(' ') == -1);
+			mergedSynonyms = mergedSynonyms.concat(nounSynonyms);
+		}
+
+		let randomSynonym = this.selectRandom<string>(mergedSynonyms);
+		return randomSynonym;
+	}
+	
+	public alpha(length: number = 1): string {
+		let output: string[] = [];
+		
+		for (let outputIndex = 0; outputIndex < length; outputIndex++) {
+			let character = this.selectRandom(this.alphabet);
+			output[outputIndex] = character;			
+		}
+		
+		return output.join('');
+	}
+	
+	public numeric(length: number = 1): string {
+		let output: string[] = [];
+		
+		for (let outputIndex = 0; outputIndex < length; outputIndex++) {
+			let number = this.selectRandom(this.numbers);
+			output[outputIndex] = number;			
+		}
+		
+		return output.join('');
+	}
+}
+
+function generateName(context: GeneratorContext): string {
+	let generator = underscore.template(context.template, {
+		interpolate: /\[(.+?)\]/g
+	});
+	
+	let output = generator(context);
 	return output;
+}
+
+function processTemplate(template: string): string {
+	let processedTemplate = template.replace(/#/g, '[numeric()]');
+	processedTemplate = processedTemplate.replace(/\?/g, '[alpha()]');
+	
+	return processedTemplate;
 }
 
 export function generate(template?: string, alphabet?: string, numbers?: string, count?: number) {
@@ -73,8 +107,16 @@ export function generate(template?: string, alphabet?: string, numbers?: string,
 	
 	let names: string[] = [];
 	
+	let processedTemplate = processTemplate(template);
+	
+	let context = new GeneratorContext(
+		processedTemplate,
+		alphabet.split(''),
+		numbers.split('')	
+	);
+	
 	for (let nameIndex = 0; nameIndex < count; nameIndex++) {
-		let name = generateName(template, alphabet, numbers);
+		let name = generateName(context);
 		names.push(name);
 		console.log(name);
 	}
