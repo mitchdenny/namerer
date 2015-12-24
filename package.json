@@ -1,6 +1,6 @@
 {
 	"name": "namerer",
-	"version": "0.0.0",
+	"version": "0.3.1",
 	"description": "Namerer is a simple tool to generate names and check them for availability.",
 	"main": "app.js",
 	"scripts": {
@@ -18,7 +18,8 @@
 	"dependencies": {
 		"commander": "^2.9.0",
 		"jison": "^0.4.15",
-		"sync-request": "^2.1.0"
+		"sync-request": "^2.1.0",
+		"underscore": "^1.8.3"
 	},
 	"devDependencies": {
 		"gulp": "^3.9.0",
