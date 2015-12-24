@@ -36,6 +36,13 @@ var GeneratorContext = (function () {
         var randomSynonym = this.selectRandom(mergedSynonyms);
         return randomSynonym;
     };
+    GeneratorContext.prototype.syllable = function () {
+        var vowels = [
+            'ae', 'ei', 'ie', 'ay', 'ou'
+        ];
+        var randomVowel = this.selectRandom(vowels);
+        return randomVowel;
+    };
     GeneratorContext.prototype.alpha = function (length) {
         if (length === void 0) { length = 1; }
         var output = [];

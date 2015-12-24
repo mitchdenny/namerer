@@ -49,6 +49,15 @@ class GeneratorContext {
 		return randomSynonym;
 	}
 	
+	public syllable(): string {
+		let vowels: string[] = [
+			'ae', 'ei', 'ie', 'ay', 'ou'	
+		];
+		
+		let randomVowel = this.selectRandom(vowels);
+		return randomVowel;
+	}
+	
 	public alpha(length: number = 1): string {
 		let output: string[] = [];
 		
