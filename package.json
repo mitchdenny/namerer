@@ -1,27 +1,28 @@
 {
-  "name": "namerer",
-  "version": "0.2.7",
-  "description": "Namerer is a simple tool to generate names and check them for availability.",
-  "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/mitchdenny/namerer/"
-  },
-  "bin": {
-    "namerer": "./bin/namerer"
-  },
-  "author": "Mitch Denny <mitch@mitchdenny.com> (http://mitchdenny.com/)",
-  "license": "Apache-2.0",
-  "dependencies": {
-    "commander": "^2.9.0",
-    "jison": "^0.4.15"
-  },
-  "devDependencies": {
-    "gulp": "^3.9.0",
-    "gulp-typescript": "^2.10.0",
-    "typescript": "^1.7.5"
-  }
+	"name": "namerer",
+	"version": "0.0.0",
+	"description": "Namerer is a simple tool to generate names and check them for availability.",
+	"main": "app.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/mitchdenny/namerer/"
+	},
+	"bin": {
+		"namerer": "./bin/namerer"
+	},
+	"author": "Mitch Denny <mitch@mitchdenny.com> (http://mitchdenny.com/)",
+	"license": "Apache-2.0",
+	"dependencies": {
+		"commander": "^2.9.0",
+		"jison": "^0.4.15",
+		"sync-request": "^2.1.0"
+	},
+	"devDependencies": {
+		"gulp": "^3.9.0",
+		"gulp-typescript": "^2.10.0",
+		"typescript": "^1.7.5"
+	}
 }

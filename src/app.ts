@@ -2,6 +2,7 @@
 /// <reference path="../typings/underscore/underscore.d.ts" />
 import * as fs from 'fs';
 import underscore = require('underscore');
+var request = require('sync-request');
 
 export function getVersion() {
 	let content = fs.readFileSync(__dirname + '/package.json', 'utf8');
@@ -27,18 +28,47 @@ class GeneratorContext {
 		return selection;
 	}
 	
-	public actual(input: string): string {
-		return input;
+	public synonym(word: string): string {
+		let url = `http://words.bighugelabs.com/api/2/845ce6475dd073474a31f951868035d7/${word}/json`;
+		let response = request('get', url);
+		let lookup = JSON.parse(response.getBody());
+		
+		let mergedSynonyms: string[] = [];
+
+		if (lookup.verb) {
+			let verbSynonyms: string[] = lookup.verb.syn.filter((value: string) => value.indexOf(' ') == -1);
+			mergedSynonyms = mergedSynonyms.concat(verbSynonyms);
+		}
+
+		if (lookup.noun) {
+			let nounSynonyms: string[] = lookup.noun.syn.filter((value: string) => value.indexOf(' ') == -1);
+			mergedSynonyms = mergedSynonyms.concat(nounSynonyms);
+		}
+
+		let randomSynonym = this.selectRandom<string>(mergedSynonyms);
+		return randomSynonym;
 	}
 	
-	public alpha(): string {
-		let character = this.selectRandom(this.alphabet);
-		return character;
+	public alpha(length: number = 1): string {
+		let output: string[] = [];
+		
+		for (let outputIndex = 0; outputIndex < length; outputIndex++) {
+			let character = this.selectRandom(this.alphabet);
+			output[outputIndex] = character;			
+		}
+		
+		return output.join('');
 	}
 	
-	public numeric(): string {
-		let number = this.selectRandom(this.numbers);
-		return number;
+	public numeric(length: number = 1): string {
+		let output: string[] = [];
+		
+		for (let outputIndex = 0; outputIndex < length; outputIndex++) {
+			let number = this.selectRandom(this.numbers);
+			output[outputIndex] = number;			
+		}
+		
+		return output.join('');
 	}
 }
 
@@ -49,6 +79,13 @@ function generateName(context: GeneratorContext): string {
 	
 	let output = generator(context);
 	return output;
+}
+
+function processTemplate(template: string): string {
+	let processedTemplate = template.replace(/#/g, '[numeric()]');
+	processedTemplate = processedTemplate.replace(/\?/g, '[alpha()]');
+	
+	return processedTemplate;
 }
 
 export function generate(template?: string, alphabet?: string, numbers?: string, count?: number) {
@@ -70,8 +107,10 @@ export function generate(template?: string, alphabet?: string, numbers?: string,
 	
 	let names: string[] = [];
 	
+	let processedTemplate = processTemplate(template);
+	
 	let context = new GeneratorContext(
-		template,
+		processedTemplate,
 		alphabet.split(''),
 		numbers.split('')	
 	);
