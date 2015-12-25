@@ -174,3 +174,13 @@ export function generate(template?: string, alphabet?: string, numbers?: string,
 		console.log(name);
 	}
 }
+
+export function filter(candidate: string, dnsSuffixes: string[]) {
+	if (!candidate) {
+		console.log('stdin mode');
+	}
+	
+	if (dnsSuffixes) {
+		console.log(dnsSuffixes);
+	}
+}

@@ -133,3 +133,12 @@ function generate(template, alphabet, numbers, count) {
     }
 }
 exports.generate = generate;
+function filter(candidate, dnsSuffixes) {
+    if (!candidate) {
+        console.log('stdin mode');
+    }
+    if (dnsSuffixes) {
+        console.log(dnsSuffixes);
+    }
+}
+exports.filter = filter;
