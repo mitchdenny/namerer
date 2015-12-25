@@ -33,8 +33,50 @@ var GeneratorContext = (function () {
             var nounSynonyms = lookup.noun.syn.filter(function (value) { return value.indexOf(' ') == -1; });
             mergedSynonyms = mergedSynonyms.concat(nounSynonyms);
         }
-        var randomSynonym = this.selectRandom(mergedSynonyms);
-        return randomSynonym;
+        var output = this.selectRandom(mergedSynonyms);
+        return output;
+    };
+    GeneratorContext.prototype.consonant = function () {
+        var consonants = [
+            'b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n',
+            'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z'
+        ];
+        var output = this.selectRandom(consonants);
+        return output;
+    };
+    GeneratorContext.prototype.syllable = function (usePhoneticVowels) {
+        var _this = this;
+        if (usePhoneticVowels === void 0) { usePhoneticVowels = true; }
+        var syllableTemplates = [
+            function () { return ("" + _this.vowel() + _this.consonant()); },
+            function () { return ("" + _this.consonant() + _this.vowel()); },
+            function () { return ("" + _this.consonant() + _this.vowel() + _this.consonant()); }
+        ];
+        if (usePhoneticVowels) {
+            syllableTemplates.push(function () { return ("" + _this.consonant() + _this.phoneticVowel()); });
+        }
+        var syllableTemplate = this.selectRandom(syllableTemplates);
+        var output = syllableTemplate();
+        return output;
+    };
+    GeneratorContext.prototype.vowel = function () {
+        var vowels = [
+            'a', 'e', 'i', 'o', 'u'
+        ];
+        var output = this.selectRandom(vowels);
+        return output;
+    };
+    GeneratorContext.prototype.phoneticVowel = function () {
+        // source: http://www.phonicsontheweb.com/vowel-combinations.php
+        var phoneticVowels = [
+            'a', 'ai', 'ay', 'au', 'aw', 'augh', 'wa', 'all', 'ald', 'alk', 'alm', 'alt',
+            'e', 'ee', 'ea', 'eu', 'ei', 'ey', 'ew', 'eigh',
+            'i', 'ie', 'ye', 'igh', 'ign', 'ind',
+            'o', 'oo', 'oa', 'oe', 'oi', 'oy', 'old', 'olk', 'olt', 'oll', 'ost', 'ou', 'ow',
+            'u', 'ue', 'ui'
+        ];
+        var output = this.selectRandom(phoneticVowels);
+        return output;
     };
     GeneratorContext.prototype.alpha = function (length) {
         if (length === void 0) { length = 1; }

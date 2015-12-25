@@ -1,6 +1,7 @@
 /// <reference path="../typings/node/node.d.ts" />
 /// <reference path="../typings/underscore/underscore.d.ts" />
 import * as fs from 'fs';
+import * as util from 'util';
 import underscore = require('underscore');
 var request = require('sync-request');
 
@@ -45,8 +46,60 @@ class GeneratorContext {
 			mergedSynonyms = mergedSynonyms.concat(nounSynonyms);
 		}
 
-		let randomSynonym = this.selectRandom<string>(mergedSynonyms);
-		return randomSynonym;
+		let output = this.selectRandom<string>(mergedSynonyms);
+		return output;
+	}
+	
+	public consonant(): string {
+		let consonants: string[] = [
+			'b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n',
+			'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z'	
+		];
+		
+		let output = this.selectRandom(consonants);
+		return output;
+	}
+	
+	public syllable(usePhoneticVowels: boolean = true): string {
+		let syllableTemplates = [
+			() => `${this.vowel()}${this.consonant()}`,
+			() => `${this.consonant()}${this.vowel()}`,
+			() => `${this.consonant()}${this.vowel()}${this.consonant()}`
+		];
+		
+		if (usePhoneticVowels) {
+			syllableTemplates.push(
+				() => `${this.consonant()}${this.phoneticVowel()}`	
+			);
+		}
+		
+		let syllableTemplate = this.selectRandom(syllableTemplates);
+		
+		let output = syllableTemplate();
+		return output;
+	}
+	
+	public vowel(): string {
+		let vowels: string[] = [
+			'a', 'e', 'i', 'o', 'u'	
+		];
+		
+		let output = this.selectRandom(vowels);
+		return output;
+	}
+	
+	public phoneticVowel(): string {
+		// source: http://www.phonicsontheweb.com/vowel-combinations.php
+		let phoneticVowels: string[] = [
+			'a', 'ai', 'ay', 'au', 'aw', 'augh', 'wa', 'all', 'ald', 'alk', 'alm', 'alt',
+			'e', 'ee', 'ea', 'eu', 'ei', 'ey', 'ew', 'eigh',
+			'i', 'ie', 'ye', 'igh', 'ign', 'ind',
+			'o', 'oo', 'oa', 'oe', 'oi', 'oy', 'old', 'olk', 'olt', 'oll', 'ost', 'ou', 'ow',
+			'u', 'ue', 'ui'
+		];
+		
+		let output = this.selectRandom(phoneticVowels);
+		return output;
 	}
 	
 	public alpha(length: number = 1): string {

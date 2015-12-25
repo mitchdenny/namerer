@@ -1,6 +1,6 @@
 {
 	"name": "namerer",
-	"version": "0.3.1",
+	"version": "0.4.0",
 	"description": "Namerer is a simple tool to generate names and check them for availability.",
 	"main": "app.js",
 	"scripts": {
