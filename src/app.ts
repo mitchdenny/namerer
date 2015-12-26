@@ -175,7 +175,7 @@ export function generate(template?: string, alphabet?: string, numbers?: string,
 	}
 }
 
-export function filter(candidate: string, dnsSuffixes: string[]) {
+function processCandidatesFromStdin(dnsSuffixes: string[]) {
 	let data: string = '';
 	
 	process.stdin.setEncoding('utf8');
@@ -183,6 +183,23 @@ export function filter(candidate: string, dnsSuffixes: string[]) {
 		data = data + chunk;
 	});
 	process.stdin.on('end', function() {
-		process.stdout.write(data);
-	});
+		let candidates: string[] = data.split('\n');
+		
+		for (let candidateIndex in candidates) {
+			let candidate = candidates[candidateIndex];
+			processCandidate(candidate, dnsSuffixes);
+		}	
+	});	
+}
+
+function processCandidate(candidate: string, dnsSuffixes: string[]) {
+	console.log(candidate);
+}
+
+export function filter(candidate: string, dnsSuffixes: string[]) {
+	if (candidate == null) {
+		processCandidatesFromStdin(dnsSuffixes);
+	} else {
+		processCandidate(candidate, dnsSuffixes);	
+	}
 }

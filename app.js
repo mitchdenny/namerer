@@ -133,14 +133,29 @@ function generate(template, alphabet, numbers, count) {
     }
 }
 exports.generate = generate;
-function filter(candidate, dnsSuffixes) {
+function processCandidatesFromStdin(dnsSuffixes) {
     var data = '';
     process.stdin.setEncoding('utf8');
     process.stdin.on('data', function (chunk) {
         data = data + chunk;
     });
     process.stdin.on('end', function () {
-        process.stdout.write(data);
+        var candidates = data.split('\n');
+        for (var candidateIndex in candidates) {
+            var candidate = candidates[candidateIndex];
+            processCandidate(candidate, dnsSuffixes);
+        }
     });
+}
+function processCandidate(candidate, dnsSuffixes) {
+    console.log(candidate);
+}
+function filter(candidate, dnsSuffixes) {
+    if (candidate == null) {
+        processCandidatesFromStdin(dnsSuffixes);
+    }
+    else {
+        processCandidate(candidate, dnsSuffixes);
+    }
 }
 exports.filter = filter;
