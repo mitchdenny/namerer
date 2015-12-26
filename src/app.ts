@@ -2,6 +2,7 @@
 /// <reference path="../typings/underscore/underscore.d.ts" />
 import * as fs from 'fs';
 import * as util from 'util';
+import * as dns from 'dns';
 import underscore = require('underscore');
 var request = require('sync-request');
 
@@ -193,7 +194,14 @@ function processCandidatesFromStdin(dnsSuffixes: string[]) {
 }
 
 function processCandidate(candidate: string, dnsSuffixes: string[]) {
-	console.log(candidate);
+	let domain = `${candidate}.com`;
+	dns.resolveNs(domain, function(err, addresses) {
+		if (err) {
+			console.log('+%s', candidate);			
+		} else {
+			console.log('-%s', candidate)
+		}
+	});
 }
 
 export function filter(candidate: string, dnsSuffixes: string[]) {

@@ -1,6 +1,7 @@
 /// <reference path="../typings/node/node.d.ts" />
 /// <reference path="../typings/underscore/underscore.d.ts" />
 var fs = require('fs');
+var dns = require('dns');
 var underscore = require('underscore');
 var request = require('sync-request');
 function getVersion() {
@@ -148,7 +149,15 @@ function processCandidatesFromStdin(dnsSuffixes) {
     });
 }
 function processCandidate(candidate, dnsSuffixes) {
-    console.log(candidate);
+    var domain = candidate + ".com";
+    dns.resolveNs(domain, function (err, addresses) {
+        if (err) {
+            console.log('+%s', candidate);
+        }
+        else {
+            console.log('-%s', candidate);
+        }
+    });
 }
 function filter(candidate, dnsSuffixes) {
     if (candidate == null) {
