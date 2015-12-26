@@ -134,11 +134,13 @@ function generate(template, alphabet, numbers, count) {
 }
 exports.generate = generate;
 function filter(candidate, dnsSuffixes) {
-    if (!candidate) {
-        console.log('stdin mode');
-    }
-    if (dnsSuffixes) {
-        console.log(dnsSuffixes);
-    }
+    var data = '';
+    process.stdin.setEncoding('utf8');
+    process.stdin.on('data', function (chunk) {
+        data = data + chunk;
+    });
+    process.stdin.on('end', function () {
+        process.stdout.write(data);
+    });
 }
 exports.filter = filter;

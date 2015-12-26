@@ -176,11 +176,13 @@ export function generate(template?: string, alphabet?: string, numbers?: string,
 }
 
 export function filter(candidate: string, dnsSuffixes: string[]) {
-	if (!candidate) {
-		console.log('stdin mode');
-	}
+	let data: string = '';
 	
-	if (dnsSuffixes) {
-		console.log(dnsSuffixes);
-	}
+	process.stdin.setEncoding('utf8');
+	process.stdin.on('data', function(chunk) {
+		data = data + chunk;
+	});
+	process.stdin.on('end', function() {
+		process.stdout.write(data);
+	});
 }
