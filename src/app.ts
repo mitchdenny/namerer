@@ -2,6 +2,7 @@
 /// <reference path="../typings/underscore/underscore.d.ts" />
 import * as fs from 'fs';
 import * as util from 'util';
+import * as dns from 'dns';
 import underscore = require('underscore');
 var request = require('sync-request');
 
@@ -172,5 +173,41 @@ export function generate(template?: string, alphabet?: string, numbers?: string,
 		let name = generateName(context);
 		names.push(name);
 		console.log(name);
+	}
+}
+
+function processCandidatesFromStdin(dnsSuffixes: string[]) {
+	let data: string = '';
+	
+	process.stdin.setEncoding('utf8');
+	process.stdin.on('data', function(chunk) {
+		data = data + chunk;
+	});
+	process.stdin.on('end', function() {
+		let candidates: string[] = data.split('\n');
+		
+		for (let candidateIndex in candidates) {
+			let candidate = candidates[candidateIndex];
+			processCandidate(candidate, dnsSuffixes);
+		}	
+	});	
+}
+
+function processCandidate(candidate: string, dnsSuffixes: string[]) {
+	let domain = `${candidate}.com`;
+	dns.resolveNs(domain, function(err, addresses) {
+		if (err) {
+			console.log('+%s', candidate);			
+		} else {
+			console.log('-%s', candidate)
+		}
+	});
+}
+
+export function filter(candidate: string, dnsSuffixes: string[]) {
+	if (candidate == null) {
+		processCandidatesFromStdin(dnsSuffixes);
+	} else {
+		processCandidate(candidate, dnsSuffixes);	
 	}
 }

@@ -1,6 +1,7 @@
 /// <reference path="../typings/node/node.d.ts" />
 /// <reference path="../typings/underscore/underscore.d.ts" />
 var fs = require('fs');
+var dns = require('dns');
 var underscore = require('underscore');
 var request = require('sync-request');
 function getVersion() {
@@ -133,3 +134,37 @@ function generate(template, alphabet, numbers, count) {
     }
 }
 exports.generate = generate;
+function processCandidatesFromStdin(dnsSuffixes) {
+    var data = '';
+    process.stdin.setEncoding('utf8');
+    process.stdin.on('data', function (chunk) {
+        data = data + chunk;
+    });
+    process.stdin.on('end', function () {
+        var candidates = data.split('\n');
+        for (var candidateIndex in candidates) {
+            var candidate = candidates[candidateIndex];
+            processCandidate(candidate, dnsSuffixes);
+        }
+    });
+}
+function processCandidate(candidate, dnsSuffixes) {
+    var domain = candidate + ".com";
+    dns.resolveNs(domain, function (err, addresses) {
+        if (err) {
+            console.log('+%s', candidate);
+        }
+        else {
+            console.log('-%s', candidate);
+        }
+    });
+}
+function filter(candidate, dnsSuffixes) {
+    if (candidate == null) {
+        processCandidatesFromStdin(dnsSuffixes);
+    }
+    else {
+        processCandidate(candidate, dnsSuffixes);
+    }
+}
+exports.filter = filter;

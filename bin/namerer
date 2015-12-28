@@ -10,7 +10,22 @@ program
 	.option('-c, --count [count]', 'Number of names to generate.')
 	.option('-o, --output [output]', 'Way to output data.')
 	.action(function(template, options) {
-		namerer.generate(template, options.alphabet, options.numbers, options.count);
+		namerer.generate(
+			template,
+			options.alphabet,
+			options.numbers,
+			options.count
+			);
+	});
+
+program
+	.command('filter [candidate]')
+	.option('-d, --dnssuffixes [suffix]')
+	.action(function(candidate, options) {
+		namerer.filter(
+			candidate,
+			options.dnssuffixes ? options.dnssuffixes.split(',') : null
+			);
 	});
 	
 program.parse(process.argv);
