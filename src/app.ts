@@ -188,13 +188,17 @@ function processCandidatesFromStdin(dnsSuffixes: string[]) {
 		
 		for (let candidateIndex in candidates) {
 			let candidate = candidates[candidateIndex];
-			processCandidate(candidate, dnsSuffixes);
+			
+			if (candidate != '') {
+				processCandidate(candidate, dnsSuffixes);
+			}
 		}	
 	});	
 }
 
 function processCandidate(candidate: string, dnsSuffixes: string[]) {
 	let domain = `${candidate}.com`;
+	
 	dns.resolveNs(domain, function(err, addresses) {
 		if (err) {
 			console.log('+%s', candidate);			
