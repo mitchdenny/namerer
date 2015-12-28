@@ -130,7 +130,7 @@ function generate(template, alphabet, numbers, count) {
     for (var nameIndex = 0; nameIndex < count; nameIndex++) {
         var name_1 = generateName(context);
         names.push(name_1);
-        console.log(name_1);
+        process.stdout.write(name_1 + '\n');
     }
 }
 exports.generate = generate;

@@ -172,7 +172,7 @@ export function generate(template?: string, alphabet?: string, numbers?: string,
 	for (let nameIndex = 0; nameIndex < count; nameIndex++) {
 		let name = generateName(context);
 		names.push(name);
-		console.log(name);
+		process.stdout.write(name + '\n');
 	}
 }
 
