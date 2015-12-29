@@ -8,7 +8,7 @@ var paths = {
 	bin: 'bin/**/*',
 	typescript: 'src/**/*.ts',
 	javascript: '**/*.js',
-	metadata: ['**/package.json', '!node_modules/**/package.json']
+	metadata: ['**/package.json', '!node_modules/**/package.json', '**/tsconfig.json', '**/jsconfig.json']
 }
 
 gulp.task('compile', function () {

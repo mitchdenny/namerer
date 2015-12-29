@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+"use strict";
 var namerer = require('../app.js');
 var program = require('commander');
 
@@ -10,12 +11,17 @@ program
 	.option('-c, --count [count]', 'Number of names to generate.')
 	.option('-o, --output [output]', 'Way to output data.')
 	.action(function(template, options) {
-		namerer.generate(
+		let names = namerer.generate(
 			template,
 			options.alphabet,
 			options.numbers,
 			options.count
 			);
+			
+		for (let nameIndex in names) {
+			let name = names[nameIndex];
+			process.stdout.write(name + '\n');
+		}
 	});
 
 program
