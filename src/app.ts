@@ -226,40 +226,47 @@ class FilterContext {
 }
 
 class FilterResult {
-	constructor(check: string, name: string) {
+	constructor(check: string, name: string, isAvailable: boolean) {
 		this.check = check;
 		this.name = name;
+		this.isAvailable = isAvailable;
 	}
 	
 	private check: string;
 	private name: string;
+	private isAvailable: boolean;
 }
 
-function processCandidate(context: FilterContext): Promise<any> {
-	let promise = new Promise<FilterResult>((resolve, reject) => {
-		let domain = `${context.name}.com`;
-	
-		dns.resolveNs(domain, function(err, addresses) {
+async function checkDomainName(context: FilterContext): Promise<any> {
+	let promise = new Promise<any>((resolve, reject) => {
+		let domainName = `${context.name}.com`;
+		
+		dns.resolveNs(domainName, function(err, addresses) {
 			if (err) {
-				let result = new FilterResult('dns', domain);
+				let result = new FilterResult('DomainName', domainName, true);
 				context.results.push(result);
 				resolve();
 			} else {
-				let result = new FilterResult('dns', domain);
+				let result = new FilterResult('DomainName', domainName, false);
 				context.results.push(result);
 				resolve();
 			}
-		});		
+		});	
 	});
 	
 	return promise;
 }
 
-export function filter(candidate: string, dnsSuffixes: string[]) {
+async function processCandidate(context: FilterContext): Promise<any> {
+	await checkDomainName(context);
+	console.log(context);
+}
+
+export async function filter(candidate: string, dnsSuffixes: string[]): Promise<FilterContext> {
 	if (candidate == null) {
 		processCandidatesFromStdin(dnsSuffixes);
 	} else {
 		let context = new FilterContext(candidate);
-		processCandidate(context);
+		return await processCandidate(context);
 	}
 }

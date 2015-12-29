@@ -31,7 +31,8 @@ program
 		namerer.filter(
 			candidate,
 			options.dnssuffixes ? options.dnssuffixes.split(',') : null
-			);
+			).then(() => {
+			});
 	});
 	
 program.parse(process.argv);
