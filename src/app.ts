@@ -209,22 +209,42 @@ function processCandidatesFromStdin(dnsSuffixes: string[]) {
 			let candidate = candidates[candidateIndex];
 
 			if (candidate != '') {
-				processCandidate(candidate, dnsSuffixes);
+				processCandidate(candidate, dnsSuffixes).then(result => {
+					console.log(result);
+				});
 			}
 		}
 	});
 }
 
-function processCandidate(candidate: string, dnsSuffixes: string[]) {
-	let domain = `${candidate}.com`;
+class FilterResult {
+	constructor(name: string) {
+		this.name = name;
+	}
+	
+	private name: string;
+	
+	public get isAvailable(): boolean {
+		return true;
+	}
+}
 
-	dns.resolveNs(domain, function(err, addresses) {
-		if (err) {
-			console.log('+%s', candidate);
-		} else {
-			console.log('-%s', candidate)
-		}
+function processCandidate(candidate: string, dnsSuffixes: string[]): Promise<FilterResult> {
+	let promise = new Promise<FilterResult>((resolve, reject) => {
+		let domain = `${candidate}.com`;
+	
+		dns.resolveNs(domain, function(err, addresses) {
+			if (err) {
+				let result = new FilterResult(candidate);
+				resolve(result);
+			} else {
+				let result = new FilterResult(candidate);
+				resolve(result);
+			}
+		});		
 	});
+	
+	return promise;
 }
 
 export function filter(candidate: string, dnsSuffixes: string[]) {
