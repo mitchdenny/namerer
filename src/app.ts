@@ -63,13 +63,17 @@ class GeneratorContext {
 		return output;
 	}
 
-	public syllable(usePhoneticVowels?: boolean): string {
+	public syllable(usePhoneticVowels: boolean): string {
+		if (usePhoneticVowels === undefined) {
+			usePhoneticVowels = true;
+		}
+		
 		let syllableTemplates = [
 			() => `${this.vowel() }${this.consonant() }`,
 			() => `${this.consonant() }${this.vowel() }`,
 			() => `${this.consonant() }${this.vowel() }${this.consonant() }`
 		];
-
+		
 		if (usePhoneticVowels) {
 			syllableTemplates.push(
 				() => `${this.consonant() }${this.phoneticVowel() }`
@@ -105,7 +109,11 @@ class GeneratorContext {
 		return output;
 	}
 
-	public alpha(length?: number): string {
+	public alpha(length: number): string {
+		if (length === undefined) {
+			length = 1;
+		}
+		
 		let output: string[] = [];
 		
 		for (let outputIndex = 0; outputIndex < length; outputIndex++) {
@@ -116,7 +124,11 @@ class GeneratorContext {
 		return output.join('');
 	}
 
-	public numeric(length?: number): string {
+	public numeric(length: number): string {
+		if (length === undefined) {
+			length = 1;
+		}
+		
 		let output: string[] = [];
 
 		for (let outputIndex = 0; outputIndex < length; outputIndex++) {
@@ -144,39 +156,43 @@ function processTemplate(template: string): string {
 	return processedTemplate;
 }
 
-export function generate(template?: string, alphabet?: string, numbers?: string, count?: number): string[] {
-	if (!template) {
-		template = '????????';
-	}
-
-	if (!alphabet) {
-		alphabet = 'abcdefghijklmnopqrstuvwxyz';
-	}
-
-	if (!numbers) {
-		numbers = '0123456789';
-	}
-
-	if (!count) {
-		count = 1;
-	}
-
-	let names: string[] = [];
-
-	let processedTemplate = processTemplate(template);
-
-	let context = new GeneratorContext(
-		processedTemplate,
-		alphabet.split(''),
-		numbers.split('')
-	);
-
-	for (let nameIndex = 0; nameIndex < count; nameIndex++) {
-		let name = generateName(context);
-		names.push(name);
-	}
+export function generate(template?: string, alphabet?: string, numbers?: string, count?: number): Promise<string[]> {
+	let promise = new Promise<string[]>((resolve, reject) => {
+		if (!template) {
+			template = '????????';
+		}
+	
+		if (!alphabet) {
+			alphabet = 'abcdefghijklmnopqrstuvwxyz';
+		}
+	
+		if (!numbers) {
+			numbers = '0123456789';
+		}
+	
+		if (!count) {
+			count = 1;
+		}
+	
+		let names: string[] = [];
+	
+		let processedTemplate = processTemplate(template);
+	
+		let context = new GeneratorContext(
+			processedTemplate,
+			alphabet.split(''),
+			numbers.split('')
+		);
+	
+		for (let nameIndex = 0; nameIndex < count; nameIndex++) {
+			let name = generateName(context);
+			names.push(name);
+		}
 		
-	return names;
+		resolve(names);
+	});
+		
+	return promise;
 }
 
 function processCandidatesFromStdin(dnsSuffixes: string[]) {

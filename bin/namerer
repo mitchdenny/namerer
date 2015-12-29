@@ -11,17 +11,17 @@ program
 	.option('-c, --count [count]', 'Number of names to generate.')
 	.option('-o, --output [output]', 'Way to output data.')
 	.action(function(template, options) {
-		let names = namerer.generate(
+		namerer.generate(
 			template,
 			options.alphabet,
 			options.numbers,
 			options.count
-			);
-			
-		for (let nameIndex in names) {
-			let name = names[nameIndex];
-			process.stdout.write(name + '\n');
-		}
+			).then(names => {
+				for (let nameIndex in names) {
+					let name = names[nameIndex];
+					process.stdout.write(name + '\n');
+				}				
+			});
 	});
 
 program
