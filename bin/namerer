@@ -27,11 +27,15 @@ program
 program
 	.command('filter [candidate]')
 	.option('-d, --dnssuffixes [suffix]')
-	.action(function(candidate, options) {
+	.action(function(name, options) {
 		namerer.filter(
-			candidate,
+			name,
 			options.dnssuffixes ? options.dnssuffixes.split(',') : null
-			).then(() => {
+			).then((results) => {
+				for (let resultIndex in results) {
+					let result = results[resultIndex];
+					process.stdout.write(JSON.stringify(result, null, '\t') + '\n');
+				}
 			});
 	});
 	

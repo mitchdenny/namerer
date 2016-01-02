@@ -195,37 +195,71 @@ export function generate(template?: string, alphabet?: string, numbers?: string,
 	return promise;
 }
 
-async function processCandidatesFromStdin(dnsSuffixes: string[]) {
-	let data: string = '';
-
-	process.stdin.setEncoding('utf8');
-	process.stdin.on('data', function(chunk) {
-		data = data + chunk;
-	});
-	process.stdin.on('end', async function() {
-		let candidates: string[] = data.split('\n');
-
-		for (let candidateIndex in candidates) {
-			let candidate = candidates[candidateIndex];
-
-			if (candidate != '') {
-			    let context = new FilterContext(candidate);
-				await processCandidate(context);
+async function getNamesFromStdIn(): Promise<string[]> {
+	let promise = new Promise<string[]>((resolve, reject) => {
+		let data: string = '';
+	
+		process.stdin.setEncoding('utf8');
+		process.stdin.on('data', function(chunk) {
+			data = data + chunk;
+		});
+		
+		process.stdin.on('end', async function() {
+			let lines: string[] = data.split('\n');
+			let names: string[] = [];
+			
+			for (let lineIndex in lines) {
+				let line = lines[lineIndex];
+	
+				if (line != '') {
+					names.push(line);
+				}
 			}
-		}
+			
+			resolve(names);
+		});
 	});
+	
+	return promise;
+}
+
+async function processNamesFromStdin(dnsSuffixes: string[]): Promise<FilterResult[]> {
+	let names = await getNamesFromStdIn();
+	let results: FilterResult[] = [];
+	
+	for (let nameIndex in names) {
+		let name = names[nameIndex];
+		
+		if (name != '') {
+			let context = new FilterContext(name, dnsSuffixes);
+			let result = await processName(context);
+			results.push(result);
+		}
+	}
+	
+	return results;
 }
 
 class FilterContext {
+	constructor(name: string, dnsSuffixes: string[]) {
+		this.name = name;
+		this.dnsSuffixes = dnsSuffixes;
+	}
+	
+	public name: string;
+	public dnsSuffixes: string[];
+}
+
+class FilterResult {
 	constructor(name: string) {
 		this.name = name;
 	}
 	
 	public name: string;
-	public results: FilterResult[] = [];
+	public checks: Check[] = [];
 }
 
-class FilterResult {
+class Check {
 	constructor(check: string, name: string, isAvailable: boolean) {
 		this.check = check;
 		this.name = name;
@@ -237,36 +271,54 @@ class FilterResult {
 	private isAvailable: boolean;
 }
 
-async function checkDomainName(context: FilterContext): Promise<any> {
-	let promise = new Promise<any>((resolve, reject) => {
-		let domainName = `${context.name}.com`;
-		
+async function checkDomainName(domainName: string): Promise<Check> {
+	let promise = new Promise<Check>((resolve, reject) => {
 		dns.resolveNs(domainName, function(err, addresses) {
 			if (err) {
-				let result = new FilterResult('DomainName', domainName, true);
-				context.results.push(result);
-				resolve();
+				let check = new Check('DomainName', domainName, true);
+				resolve(check);
 			} else {
-				let result = new FilterResult('DomainName', domainName, false);
-				context.results.push(result);
-				resolve();
+				let check = new Check('DomainName', domainName, false);
+				resolve(check);
 			}
-		});	
+		});
 	});
 	
 	return promise;
 }
 
-async function processCandidate(context: FilterContext): Promise<any> {
-	await checkDomainName(context);
-	console.log(context);
+async function checkDomainNames(context: FilterContext): Promise<Check[]> {
+	let checks: Check[] = [];
+	
+	for (let dnsSuffixIndex in context.dnsSuffixes) {
+		let dnsSuffix = context.dnsSuffixes[dnsSuffixIndex];
+		let domainName = `${context.name}.${dnsSuffix}`;
+		let check = await checkDomainName(domainName);
+		checks.push(check);
+	}
+	
+	return checks;
 }
 
-export async function filter(candidate: string, dnsSuffixes: string[]): Promise<FilterContext> {
-	if (candidate == null) {
-		processCandidatesFromStdin(dnsSuffixes);
+async function processName(context: FilterContext): Promise<FilterResult> {
+	let result: FilterResult = new FilterResult(context.name);
+	
+	let dnsChecks = await checkDomainNames(context);
+	result.checks = result.checks.concat(dnsChecks);
+	
+	return result;
+}
+
+export async function filter(name: string, dnsSuffixes: string[]): Promise<FilterResult[]> {
+	if (dnsSuffixes == null) {
+		dnsSuffixes = ['com'];
+	}
+	
+	if (name == null) {
+		return await processNamesFromStdin(dnsSuffixes);
 	} else {
-		let context = new FilterContext(candidate);
-		return await processCandidate(context);
+		let context = new FilterContext(name, dnsSuffixes);
+		let result = await processName(context);
+		return [result];
 	}
 }
