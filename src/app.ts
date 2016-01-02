@@ -257,6 +257,16 @@ class FilterResult {
 	
 	public name: string;
 	public checks: Check[] = [];
+
+	public get isAvailable(): boolean {
+		let passedChecks = this.checks.filter((check) => check.isAvailable);
+		
+		if (passedChecks != null && passedChecks.length > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
 
 class Check {
@@ -268,7 +278,7 @@ class Check {
 	
 	private check: string;
 	private name: string;
-	private isAvailable: boolean;
+	public isAvailable: boolean;
 }
 
 async function checkDomainName(domainName: string): Promise<Check> {
