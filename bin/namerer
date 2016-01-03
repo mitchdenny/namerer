@@ -16,10 +16,10 @@ program
 			options.alphabet,
 			options.numbers,
 			options.count
-			).then(names => {
-				for (let nameIndex in names) {
-					let name = names[nameIndex];
-					process.stdout.write(name + '\n');
+			).then((results) => {
+				for (let resultIndex in results) {
+					let result = results[resultIndex];
+					process.stdout.write(result.name + '\n');
 				}				
 			});
 	});

@@ -14,6 +14,14 @@ export function getVersion() {
 	return pkg.version;
 }
 
+class GeneratorResult {
+	constructor(name: string) {
+		this.name = name;
+	}
+	
+	public name: string;
+}
+
 class GeneratorContext {
 	constructor(template: string, alphabet: string[], numbers: string[]) {
 		this.template = template;
@@ -156,8 +164,8 @@ function processTemplate(template: string): string {
 	return processedTemplate;
 }
 
-export function generate(template?: string, alphabet?: string, numbers?: string, count?: number): Promise<string[]> {
-	let promise = new Promise<string[]>((resolve, reject) => {
+export function generate(template?: string, alphabet?: string, numbers?: string, count?: number): Promise<GeneratorResult[]> {
+	let promise = new Promise<GeneratorResult[]>((resolve, reject) => {
 		if (!template) {
 			template = '????????';
 		}
@@ -174,8 +182,6 @@ export function generate(template?: string, alphabet?: string, numbers?: string,
 			count = 1;
 		}
 	
-		let names: string[] = [];
-	
 		let processedTemplate = processTemplate(template);
 	
 		let context = new GeneratorContext(
@@ -184,12 +190,15 @@ export function generate(template?: string, alphabet?: string, numbers?: string,
 			numbers.split('')
 		);
 	
-		for (let nameIndex = 0; nameIndex < count; nameIndex++) {
+		let results: GeneratorResult[] = [];
+	
+		for (let resultIndex = 0; resultIndex < count; resultIndex++) {
 			let name = generateName(context);
-			names.push(name);
+			let result = new GeneratorResult(name);
+			results.push(result);
 		}
 		
-		resolve(names);
+		resolve(results);
 	});
 		
 	return promise;
