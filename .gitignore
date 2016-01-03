@@ -28,3 +28,9 @@ node_modules
 
 # Package output
 namerer-*.tgz
+
+# Exclude random turd-files.
+.DS_Store
+
+# Exclude generated files.
+app.js

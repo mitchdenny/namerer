@@ -3,3 +3,6 @@ src
 typings
 *.tgz
 Publish.ps1
+tsconfig.json
+gulpfile.js
+.DS_Store
