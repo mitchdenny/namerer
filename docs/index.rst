@@ -3,20 +3,19 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Namerer's documentation!
-===================================
+Namerer
+=======
 
-Contents:
+Namerer is a cross-platform name text generator specifically designed to
+ease the process of coming up with unique company, product, brand or project
+names. Beyond just random strings, Namerer supports a template approach which
+allows you to zero in on the name that you want to use.
+
+``namerer generate``
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
 
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
+   getting-started
+   generating-names
+   filtering-names
