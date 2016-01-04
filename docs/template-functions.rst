@@ -1,7 +1,7 @@
 Template Functions
 ==================
-
-TODO: Add documentation
+Template functions are the core of Namerer's string generation
+capabilities.
 
 [alpha(count?)]
 ---------------
