@@ -9,7 +9,6 @@ program
 	.option('-a, --alphabet [alphabet]', 'Selection of letters to generate from.')
 	.option('-n, --numbers [numbers]', 'Seletion of numbers to generate from.')
 	.option('-c, --count [count]', 'Number of names to generate.')
-	.option('-o, --output [output]', 'Way to output data.')
 	.action(function(template, options) {
 		namerer.generate(
 			template,
@@ -25,7 +24,7 @@ program
 	});
 
 program
-	.command('filter [candidate]')
+	.command('filter [name]')
 	.option('-d, --dnssuffixes [suffix]')
 	.action(function(name, options) {
 		namerer.filter(
