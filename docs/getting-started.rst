@@ -26,19 +26,19 @@ Hello World
 -----------
 Once you've installed Namerer, it is time for a simple hello world example
 to make sure everything is working. The simplest command in Namerer is a
-basic ``generate`` command, invoked as follows:
+basic ``generate`` command, invoked as follows::
 
-``namerer generate``
+	$ namerer generate
 
 This will output a single string which should be eight characters long
-comprised of characters from the alphabet, for example:
+comprised of characters from the alphabet, for example::
 
-``ighhkccy``
+	ighhkccy
 
 Namerer is template driven so you can actually control what is output so
 you could make it output only four random characters by issuing the
-following command:
+following command::
 
-``namerer generate "????"``
+	$ namerer generate "????"
 
 You can learn more about how Namerer works in the :doc:`generating-names` section.
