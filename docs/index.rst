@@ -11,7 +11,8 @@ ease the process of coming up with unique company, product, brand or project
 names. Beyond just random strings, Namerer supports a template approach which
 allows you to zero in on the name that you want to use.
 
-``namerer generate``
+You can use Namerer directly on the command-line, or within your own Node.js
+projects.
 
 .. toctree::
    :maxdepth: 4
