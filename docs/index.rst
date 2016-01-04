@@ -14,8 +14,9 @@ allows you to zero in on the name that you want to use.
 ``namerer generate``
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 4
 
    getting-started
    generating-names
    filtering-names
+   known-issues
