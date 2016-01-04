@@ -13,9 +13,9 @@ Installation
 ------------
 Once you have Node.js installed and configured on your system, you just
 need to pull down and install the ``namerer`` NPM package using the
-following command.
+following command::
 
-``npm install -g namerer``
+	npm install -g namerer
 
 This will install the ``namerer`` package globally so that you can issue
 commands anywhere in the shell. Alternatively you can install it locally
