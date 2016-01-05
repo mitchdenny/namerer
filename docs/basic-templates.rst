@@ -17,4 +17,5 @@ expanded into the following::
 We'll explore :doc:`template-functions` a little later, but for now know
 that ``?`` is the same as ``[alpha()]`` and ``#`` is the same as
 ``[numeric()]``. At this point in time ``?`` and ``#`` are the only
-two shorthand characters.
+two shorthand characters. Now that you've got the basics you should check
+out the :doc:`template-functions` section.
