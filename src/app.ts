@@ -77,14 +77,14 @@ class GeneratorContext {
 		}
 		
 		let syllableTemplates = [
-			() => `${this.vowel() }${this.consonant() }`,
-			() => `${this.consonant() }${this.vowel() }`,
-			() => `${this.consonant() }${this.vowel() }${this.consonant() }`
+			() => `${this.vowel()}${this.consonant()}`,
+			() => `${this.consonant()}${this.vowel()}`,
+			() => `${this.consonant()}${this.vowel()}${this.consonant()}`
 		];
 		
 		if (usePhoneticVowels) {
 			syllableTemplates.push(
-				() => `${this.consonant() }${this.phoneticVowel() }`
+				() => `${this.consonant()}${this.phoneticVowel()}`
 			);
 		}
 
