@@ -55,32 +55,54 @@ find the usefulness of the Namerer tool.
 ---------------
 The ``[alpha(count?)]`` template function outputs a random character
 constrained by the ``--alphabet`` option which can optionally be passed
-into the ``generate`` function. The function supports an optional ``count``
-parameter which allows you to specify how many random characters to output.
-The following table maps example templates to possible outputs.
+into the ``generate`` command. The function supports an optional ``count``
+parameter which allows you to specify how many random alpha characters to
+output. The following table maps example templates to possible outputs.
 
 ========== ==============
 Template   Output
 ========== ==============
-[alpha]    a
+[alpha()]    a
 [alpha(1)] w
 [alpha(5)] esome
 ========== ==============
-
 
 .. _numeric-template-function:
 
 [numeric(count?)]
 -----------------
+The ``[numeric(count?)]`` template function is similar to the :ref:`alpha-template-function`
+in that it generates a random character, but it is instead constained by the
+``--numbers`` option which can optionally be passed into the ``generate``
+command. This function also supports an optional ``count`` parameter which
+allows you to specifiy how many random numeric characters to output. The
+following table maps example templates to possible outputs.
 
-TODO: Add documentation.
+============ ==============
+Template     Output
+============ ==============
+[numeric()]    3
+[numeric(1)] 9
+[numeric(5)] 31337
+============ ==============
 
 .. _vowel-template-function:
 
 [vowel(count?)]
 ---------------
+The ``[alpha(count?)]`` template function is similar to the :ref:`alpha-template-function`
+in that it generates a random character, however it will only generate a simple
+vowel, such as ``a``, ``e``, ``i``, ``o``, or ``u``. This function also supports
+an optional ``count`` parameter which allows you to specify how many vowels
+to output. The following table maps templates to possible outputs.
 
-TODO: Add documentation.
+========== ==============
+Template     Output
+========== ==============
+[vowel()]  a
+[vowel(1)] e
+[vowel(5)] iouee
+========== ==============
 
 .. _phonetic-vowel-template-function:
 
