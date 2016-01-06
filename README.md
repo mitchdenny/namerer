@@ -30,10 +30,6 @@ inkwa
 
 I've put together [complete documentation for Namerer](http://namerer.rtfd.org) to answer all your questions, but if you've got any problems feel free to [raise an issue here on GitHub](https://github.com/mitchdenny/namerer/issues).
 
-## Documentation
-We've put some effort into providing relatively complete documentation, so
-fee
-
 ## Contributing
 Contributions are always welcome. I would recommend that you fork the repository here in GitHub, and then create a branch for your changes, and when you are ready, submit a pull request for the branch into this repo. This makes it easier for me to accept the pull request and then do any work necessary to shape it for merging into the *master* branch.
 
