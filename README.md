@@ -1,5 +1,6 @@
 [![npm version](https://badge.fury.io/js/namerer.svg)](https://badge.fury.io/js/namerer)
-[![docs](https://readthedocs.org/projects/docs/badge/?version=latest)](https://namerer.rtfd.org)
+[![docs](https://readthedocs.org/projects/namerer/badge/?version=latest)](https://namerer.rtfd.org)
+[![build](https://mitchdenny.visualstudio.com/DefaultCollection/_apis/public/build/definitions/df7963ae-08aa-428b-bc9d-4850a15b56af/27/badge)](https://mitchdenny.visualstudio.com/DefaultCollection/namerer/_build#definitionId=27&_a=completed)
 
 # Namerer
 Namerer is a simple tool to generate names and check them for availability.
