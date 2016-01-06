@@ -69,3 +69,4 @@ gulp.task('watch', ['default'], function () {
 });
 
 gulp.task('default', ['stamp', 'compile', 'pack', 'docs']);
+gulp.task('ci', ['stamp', 'compile', 'pack']);
