@@ -12,7 +12,7 @@ var paths = {
 	metadata: ['**/package.json', '!node_modules/**/package.json', '**/tsconfig.json', '**/jsconfig.json']
 }
 
-gulp.task('compile', function () {
+gulp.task('compile', ['stamp'], function () {
 	return gulp
 		.src(paths.typescript)
 		.pipe(ts(tsconfig.compilerOptions))
@@ -44,7 +44,7 @@ gulp.task('stamp', function (callback) {
 	});
 });
 
-gulp.task('pack', function (callback) {
+gulp.task('pack', ['compile'], function (callback) {
 	exec('npm pack', function (err, stdout, stderr) {
 		console.log(stdout);
 		console.log(stderr);
@@ -68,5 +68,5 @@ gulp.task('watch', ['default'], function () {
 	gulp.watch(paths.docs, ['docs']);
 });
 
-gulp.task('default', ['stamp', 'compile', 'pack', 'docs']);
-gulp.task('ci', ['stamp', 'compile', 'pack']);
+gulp.task('default', ['pack', 'docs']);
+gulp.task('ci', ['pack']);
