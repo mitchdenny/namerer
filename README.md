@@ -37,4 +37,4 @@ Note that this project makes use of TypeScript so generally speaking all the sou
 
 If you are adding features, don't worry about tagging for a release, I'll take care of that when I merge it in to observe semantic versioning rules (unless I stuff up). Finally, generally speaking I'm OK taking dependencies on the latest versions of Node.js and TypeScript. Because of some of the things that I want to do with the tool it is highly likely that I'll start using the async/await features in TypeScript which almost certainly means picking up much of ES6 - so if you take a dependency on this project be prepared ;)
 
-Random change3
+Random change4
