@@ -36,3 +36,5 @@ Contributions are always welcome. I would recommend that you fork the repository
 Note that this project makes use of TypeScript so generally speaking all the source code will be found in ```*.ts``` files in the ```src/``` folder. The ```app.js``` file in the root of the repository is generated from the TypeScript compiler. Also note that project uses Gulp as the build tool which takes care of stamping the ```package.json``` file with the latest semantic version (pulled form Git tags).
 
 If you are adding features, don't worry about tagging for a release, I'll take care of that when I merge it in to observe semantic versioning rules (unless I stuff up). Finally, generally speaking I'm OK taking dependencies on the latest versions of Node.js and TypeScript. Because of some of the things that I want to do with the tool it is highly likely that I'll start using the async/await features in TypeScript which almost certainly means picking up much of ES6 - so if you take a dependency on this project be prepared ;)
+
+Random change.
