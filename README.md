@@ -28,6 +28,14 @@ $ namerer generate "[syllable(false)][syllable()]"
 inkwa
 ```
 
+Once you've got names generating the way that you like, you can pipe the output back into the program to filter against things like domain names:
+
+```sh
+$ namerer generate "[syllable(false)][syllable()]" | namerer filter
+```
+
+The above command will check to see whether any of the generated names already have ```.com``` domains (default) and only output the names that do not hit any filters.
+
 I've put together [complete documentation for Namerer](http://namerer.rtfd.org) to answer all your questions, but if you've got any problems feel free to [raise an issue here on GitHub](https://github.com/mitchdenny/namerer/issues).
 
 ## Contributing
